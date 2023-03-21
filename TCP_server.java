@@ -38,7 +38,7 @@ public class TCP_server {
             //doc thong tin tu socket
             sentence_from_client = inputFromClient.readLine();
 
-            //chuan hoa
+            //normalization____________
             normalized_sentence = sentence_from_client.toLowerCase() + '\n';
             String firstLetter = normalized_sentence.substring(0, 1);
             String remainingLetters = normalized_sentence.substring(1, normalized_sentence.length());
@@ -48,6 +48,7 @@ public class TCP_server {
 
             // join the two substrings
             normalized_sentence = firstLetter + remainingLetters;
+            //__________________________
 
             //chuoi ket qua
             sentence_to_client = new StringBuilder(
