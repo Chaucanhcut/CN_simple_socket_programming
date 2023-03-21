@@ -3,8 +3,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.nio.Buffer;
-import java.lang.String;
-import java.lang.StringBuilder;
+import java.lang.*;
 
 
 public class TCP_server {
@@ -30,9 +29,10 @@ public class TCP_server {
                 if (sentence_from_client.equals("quit")) {
                     break;
                 }
-                
+
                 //ghi du lieu da chuan hoa ra socket
-                outputToClient.println("Normalized sentence: " + sentence_from_client);
+                //replaceAll("\\s+", " ") : loai bo dau cach thua
+                outputToClient.println("Normalized sentence: " + sentence_from_client.replaceAll("\\s+", " "));
             }
         } catch (IOException e) {
             System.out.println("Server exception: " + e.getMessage());
