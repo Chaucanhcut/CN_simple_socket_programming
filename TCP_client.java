@@ -3,41 +3,46 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.Buffer;
 
+import java.util.Scanner;
+
 public class TCP_client {
-    public static void main(String argv[]) throws Exception
-    {
-        String sentence_to_server;
-        String sentence_from_server;
+    public static void main(String[] args) {
+        //tao socket de client ket noi den server qua dia chi IP localhost va port 6789
+        try (Socket clientSocket = new Socket("127.0.0.1", 6789)) {
+            //tao inputStream ket noi voi socket
+            BufferedReader inputFromServer =
+                    new BufferedReader(
+                            new InputStreamReader(clientSocket.getInputStream()));
+            //tao outputStream ket noi voi socket
+            PrintWriter outputToServer = new PrintWriter(clientSocket.getOutputStream(), true);
 
-        //tao input string tu ban phim
-        System.out.print("Input: ");
-        BufferedReader inputFromClient =
-                new BufferedReader(new InputStreamReader(System.in));
-        //lay chuoi ky tu do nguoi dung nhap tu ban phim
-        sentence_to_server = inputFromClient.readLine();
+            Scanner scanner = new Scanner(System.in);
+            String sentence_to_server;
+            String sentence_from_server;
 
-        //tao socket de client ket noi den server qua dia chi IP va port 3456
-        Socket clientSocket = new Socket("127.0.0.1", 6789);
+            do {
+                //tao input string tu ban phim
+                System.out.print("Input: ");
+                //lay chuoi ky tu do nguoi dung nhap tu ban phim
+                sentence_to_server = scanner.nextLine();
 
-        //tao outputStream ket noi voi socket
-        DataOutputStream outputToServer =
-                new DataOutputStream(clientSocket.getOutputStream());
+                //gui chuoi ky tu toi server thong qua outputStream da ket noi voi socket
+                outputToServer.println(sentence_to_server);
 
-        //tao inputStream ket noi voi socket
-        BufferedReader inputFromServer =
-                new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
+                if (!sentence_to_server.equals("quit")) {
+                    //doc loi nhan tu server thong qua inputStream sa ket noi voi socket
+                    sentence_from_server = inputFromServer.readLine();
 
-        //gui chuoi ky tu toi server thong qua outputStream da ket noi voi socket
-        outputToServer.writeBytes(sentence_to_server + '\n');
+                    // in ket qua ra man hinh
+                    System.out.println("From server: " + sentence_from_server);
+                }
+            } while (!sentence_to_server.equals("quit"));
+            //___________________________________________
 
-        //doc loi nhan tu server thong qua inputStream sa ket noi voi socket
-        sentence_from_server = inputFromServer.readLine();
-
-        // in ket qua ra man hinh
-        System.out.println("From server: " + sentence_from_server);
-
-        //dong lien ket socket
-        clientSocket.close();
+            //dong lien ket socket
+            clientSocket.close();
+        } catch (IOException e) {
+            System.out.println("Client error: " + e.getMessage());
+        }
     }
 }
