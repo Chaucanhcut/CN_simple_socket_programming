@@ -30,9 +30,21 @@ public class TCP_server {
                     break;
                 }
 
+                 String normalized_sentence;
+                 //normalization____________
+                 normalized_sentence = sentence_from_client.toLowerCase() + '\n';
+
+                 String firstLetter = normalized_sentence.substring(0, 1);
+                 String remainingLetters = normalized_sentence.substring(1, normalized_sentence.length());
+                 // change the first letter to uppercase
+                 firstLetter = firstLetter.toUpperCase();
+                 // join the two substrings
+                 normalized_sentence = firstLetter + remainingLetters;
+                 //__________________________
+
                 //ghi du lieu da chuan hoa ra socket
                 //replaceAll("\\s+", " ") : loai bo dau cach thua
-                outputToClient.println("Normalized sentence: " + sentence_from_client.replaceAll("\\s+", " "));
+                outputToClient.println("Normalized sentence: " + normalized_sentence.replaceAll("\\s+", " "));
             }
         } catch (IOException e) {
             System.out.println("Server exception: " + e.getMessage());
