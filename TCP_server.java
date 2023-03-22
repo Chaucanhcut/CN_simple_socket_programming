@@ -32,7 +32,8 @@ public class TCP_server {
 
                  String normalized_sentence;
                  //normalization____________
-                 normalized_sentence = sentence_from_client.toLowerCase() + '\n';
+                 normalized_sentence = sentence_from_client.trim();
+                 normalized_sentence = normalized_sentence.toLowerCase() + '\n';
 
                  String firstLetter = normalized_sentence.substring(0, 1);
                  String remainingLetters = normalized_sentence.substring(1, normalized_sentence.length());
