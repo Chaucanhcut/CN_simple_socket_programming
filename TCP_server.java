@@ -30,18 +30,37 @@ public class TCP_server {
                     break;
                 }
 
-                 String normalized_sentence;
-                 //normalization____________
-                 normalized_sentence = sentence_from_client.trim();
-                 normalized_sentence = normalized_sentence.toLowerCase() + '\n';
+                String normalized_sentence;
+                //normalization____________
+                normalized_sentence = sentence_from_client.trim().toLowerCase() + '\n';
+                normalized_sentence = normalized_sentence.replaceAll("\\,+", ",");
+                normalized_sentence = normalized_sentence.replaceAll("\\.+", ".");
+                normalized_sentence = normalized_sentence.replaceAll("\\!+", "!");
+                normalized_sentence = normalized_sentence.replaceAll("\\?+", "?");
+                normalized_sentence = normalized_sentence.replaceAll("\\s+", " ");
 
-                 String firstLetter = normalized_sentence.substring(0, 1);
-                 String remainingLetters = normalized_sentence.substring(1, normalized_sentence.length());
-                 // change the first letter to uppercase
-                 firstLetter = firstLetter.toUpperCase();
-                 // join the two substrings
-                 normalized_sentence = firstLetter + remainingLetters;
-                 //__________________________
+                String firstLetter = normalized_sentence.substring(0, 1);
+                String remainingLetters = normalized_sentence.substring(1, normalized_sentence.length());
+                // change the first letter to uppercase
+                firstLetter = firstLetter.toUpperCase();
+                // join the two substrings
+                normalized_sentence = firstLetter + remainingLetters;
+                //__________________________
+
+                //dot at the end of a sentence
+                String tmp = normalized_sentence;
+                for (int i = 0; i < tmp.length(); i++) {
+                    if (normalized_sentence.charAt(i) == '.') {
+                        normalized_sentence = tmp.substring(0, i-1) + ". " + tmp.substring(i, i + 2).toUpperCase() + tmp.substring(i + 2);
+                    }
+                    if (normalized_sentence.charAt(i) == '!') {
+                        normalized_sentence = tmp.substring(0, i-1) + "! " + tmp.substring(i, i + 2).toUpperCase() + tmp.substring(i + 2);
+                    }
+                    if (normalized_sentence.charAt(i) == '?') {
+                        normalized_sentence = tmp.substring(0, i-1) + "? " + tmp.substring(i, i + 2).toUpperCase() + tmp.substring(i + 2);
+                    }
+
+                }
 
                 //ghi du lieu da chuan hoa ra socket
                 //replaceAll("\\s+", " ") : loai bo dau cach thua
